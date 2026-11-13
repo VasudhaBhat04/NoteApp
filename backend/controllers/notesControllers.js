@@ -1,37 +1,35 @@
 import Note from "../models/Note.js"
 
-export async function getAllNoted(req, res) {
+export async function getAllNotes(req, res) {
      try {
           const notes = await Note.find()
           res.status(200).json(notes)
-     }catch (error){
+     } catch (error){
           console.error("Error in getAllnotes controller",error);
           res.status(500).json({message:"Internal server error"});
+     }     
+};
+
+export async function createNote(req,res) {
+     try {
+          const {title,content} = req.body
+          const note = new Note({title, content})
+
+          const savedNote = await note.save()
+          res.status(201).json(savedNote);
+
+     } catch (error) {
+          console.error("Error in createdNote controller", error);
+          res.status(500).json({ message: "Internal server error"});
+
      }
-
-     
-}
-
-
-
-
-
-
-
-
-
-export function getAllNotes(req,res) {
-       res.status(200).send("You just fetched notes");
+    
 };
 
-export function createNote(req,res) {
-     res.status(201).json({message:"Note created successfully"})
-};
-
-export function updateNote(req,res) {
+export async function updateNote(req,res) {
      res.status(200).json({message:"Note updated successfully"})
 };
 
-export function deleteNote(req,res) {
+export async  function deleteNote(req,res) {
      res.status(200).json({message:"Note deleted successfully"})
 };
